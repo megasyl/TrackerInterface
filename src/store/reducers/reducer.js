@@ -18,6 +18,16 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 ...action.payload
             };
+        case 'LOAD_JOURNEYS_SUCCESS':
+            return {
+                ...state,
+                ...action.payload
+            };
+        case 'SELECT_JOURNEY':
+            return {
+                ...state,
+                ...action.payload
+            };
         case actionTypes.COLLAPSE_MENU:
             return {
                 ...state,

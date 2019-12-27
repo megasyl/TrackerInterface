@@ -23,7 +23,7 @@ export const loadRecordsSuccess = (records) => {
 export const loadRecords = () =>
     async (dispatch) => {
         try {
-            const records = await trackingApi.getAll();
+            const records = await trackingApi.getAllRecords();
             return dispatch(loadRecordsSuccess(records))
         } catch (e) {
             console.log(e)
