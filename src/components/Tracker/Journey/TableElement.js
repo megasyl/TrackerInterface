@@ -32,7 +32,7 @@ export class TableElement extends Component {
                 <td>{endDate.format('HH:mm:ss')}</td>
                 <td>{journey.endAddress}</td>
                 <td>{readableDuration}</td>
-                <td>x kms</td>
+                <td>{journey.distance / 1000} km</td>
             </tr>
         );
     }
