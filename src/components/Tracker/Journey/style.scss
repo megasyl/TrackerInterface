@@ -1,0 +1,13 @@
+.journey-hover {
+  &:hover {
+    background-color: rgba(51, 197, 255, 0.11);
+    cursor: pointer;
+    color: black;
+  }
+}
+
+.journey-selected {
+  background-color: rgba(51, 197, 255, 0.3);
+  cursor: pointer;
+  color: black;
+}

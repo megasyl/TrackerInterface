@@ -39,48 +39,51 @@ class Journey extends React.Component {
     }
 
     render() {
-        const points = this.props.geoPoints || [];
         const journeys = this.props.journeys || [];
         const { selected } = this.props;
-        console.log(selected)
-        const line = selected ? (<Polyline positions={selected.records.map((record) => [record.latitude, record.longitude])}/>) : null;
-        const elements = journeys.map(journey => (<JourneyTableElement journey={journey}/>))
+        let markers = [];
+        const elements = journeys.map((journey, i) => {
+            const isSelected = selected && selected.key === i;
+            console.log('isSelected ? ', selected ? selected.key: "null", i, isSelected)
+            return (<JourneyTableElement key={i} isSelected={isSelected} journey={{...journey, key:i}}/>);
+        });
+        let line = null;
+        if (selected) {
+            line = (<Polyline key="journeyLine" positions={selected.interpolatedPoints.map(({location}) => [location.latitude, location.longitude])}/>);
+            const departureRecord = selected.records[0];
+            const arrivalRecord = selected.records[selected.records.length - 1];
+            markers.push((<Marker key="journeyDeparture" position={[departureRecord.latitude, departureRecord.longitude]}>
+                <Popup>{selected.beginAddress}</Popup>
+            </Marker>));
+            markers.push((<Marker key="journeyArrival" position={[arrivalRecord.latitude, arrivalRecord.longitude]}>
+                <Popup>{selected.endAddress}</Popup>
+            </Marker>));
+
+        }
+
 
         return (
             <Aux>
-                <Row>
-                <Col md={12} xl={4}>
-                    <Card>
-                        <Card.Header>
-                            <Card.Title as="h5">Trajets</Card.Title>
-                        </Card.Header>
-                        <Card.Body>
-                            <Table responsive>
-                                <tbody>
-                                {elements}
-                                </tbody>
-                            </Table>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={12} xl={8}>
-                    <Card>
-                        <Card.Header>
-                            <Card.Title as="h5">Map</Card.Title>
-                        </Card.Header>
-                        <Card.Body>
-                            <div >
-                                <Map style={{height: "800px"}} center={[48.86, 2.34]} zoom={10}>
-                                    <TileLayer
-                                        url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
-                                    />
-                                    {line}
-                                </Map>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                </Row>
+
+                    <Map style={{height: "400px"}} center={[48.86, 2.34]} zoom={10}>
+                        <TileLayer
+                            url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                        />
+                        {line}
+                        {markers}
+                    </Map>
+                <Card>
+                    <Card.Header>
+                        <Card.Title as="h5">Trajets</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Table responsive>
+                            <tbody>
+                            {elements}
+                            </tbody>
+                        </Table>
+                    </Card.Body>
+                </Card>
             </Aux>
         );
     }

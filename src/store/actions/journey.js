@@ -8,10 +8,11 @@ export const loadJourneysSuccess = (journeys) => {
     };
 };
 
-export const selectJourney = journey => ({
+export const selectJourney = (journey, key) => ({
     type: 'SELECT_JOURNEY',
     payload: {
         selected: journey,
+        selectedKey: key,
     },
 });
 
