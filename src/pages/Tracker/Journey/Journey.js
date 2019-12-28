@@ -9,6 +9,7 @@ import { loadJourneys } from "../../../store/actions/journey";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from '../../../components/Tracker/Journey/TableElement';
+import { GREEN_MARKER_ICON, RED_MARKER_ICON } from '../../../components/Tracker/Markers';
 
 Leaflet.Icon.Default.imagePath =
     '../node_modules/leaflet';
@@ -52,10 +53,10 @@ class Journey extends React.Component {
             line = (<Polyline key="journeyLine" positions={selected.interpolatedPoints.map(({location}) => [location.latitude, location.longitude])}/>);
             const departureRecord = selected.records[0];
             const arrivalRecord = selected.records[selected.records.length - 1];
-            markers.push((<Marker key="journeyDeparture" position={[departureRecord.latitude, departureRecord.longitude]}>
+            markers.push((<Marker icon={GREEN_MARKER_ICON} key="journeyDeparture" position={[departureRecord.latitude, departureRecord.longitude]}>
                 <Popup>{selected.beginAddress}</Popup>
             </Marker>));
-            markers.push((<Marker key="journeyArrival" position={[arrivalRecord.latitude, arrivalRecord.longitude]}>
+            markers.push((<Marker icon={RED_MARKER_ICON} key="journeyArrival" position={[arrivalRecord.latitude, arrivalRecord.longitude]}>
                 <Popup>{selected.endAddress}</Popup>
             </Marker>));
 
