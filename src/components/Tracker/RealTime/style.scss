@@ -1,0 +1,25 @@
+.record-hover {
+  &:hover {
+    background-color: rgba(51, 197, 255, 0.11);
+    cursor: pointer;
+    color: black;
+  }
+}
+
+.record-selected {
+  background-color: rgba(51, 197, 255, 0.3);
+  cursor: pointer;
+  color: black;
+}
+
+.status-up {
+  color: rgb(43, 255, 71);
+}
+
+.status-stop {
+  color: rgb(255, 169, 0);
+}
+
+.status-down {
+  color: rgb(255, 20, 0);
+}

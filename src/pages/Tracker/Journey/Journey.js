@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Row, Col, Card, Form, InputGroup, Button, Table} from 'react-bootstrap';
 import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
-import { loadRecords } from "../../../store/actions/records";
 import { loadJourneys } from "../../../store/actions/journey";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
@@ -28,7 +27,6 @@ Leaflet.Icon.Default.mergeOptions({
 class Journey extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.props.actions.loadRecords();
         this.props.actions.loadJourneys();
     }
 
@@ -95,7 +93,7 @@ class Journey extends React.Component {
 
 const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadRecords, loadJourneys }, dispatch) });
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadJourneys }, dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Journey);
 

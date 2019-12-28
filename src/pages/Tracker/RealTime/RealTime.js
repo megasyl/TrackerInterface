@@ -2,11 +2,12 @@ import React from 'react';
 import Leaflet from 'leaflet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {Row, Col, Card, Form, InputGroup, Button} from 'react-bootstrap';
+import {Row, Col, Card, Form, InputGroup, Button, Table} from 'react-bootstrap';
 import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
-import { loadRecords } from "../../../store/actions/records";
+import { loadLastRecords } from "../../../store/actions/records";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
+import JourneyTableElement from "../../../components/Tracker/RealTime/TableElement";
 
 Leaflet.Icon.Default.imagePath =
     '../node_modules/leaflet';
@@ -25,7 +26,7 @@ Leaflet.Icon.Default.mergeOptions({
 class RealTime extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.props.actions.loadRecords();
+        this.props.actions.loadLastRecords();
     }
 
     componentDidMount() {
@@ -37,29 +38,36 @@ class RealTime extends React.Component {
 
     render() {
         console.log('update2', this.props)
-        const points = this.props.geoPoints || [];
-        const markers = points.map(({coordinates}) => (<Marker position={coordinates}>
-        </Marker>));
+        const { records, selected } = this.props;
+        const elements = records ? records.map((record, i) => {
+            const isSelected = selected && selected.key === i;
+            console.log('isSelected ? ', selected ? selected.key: "null", i, isSelected)
+            return (<JourneyTableElement key={i} isSelected={isSelected} record={{...record, key:i}}/>);
+        }) : [];
+        const markers = records ? records.map(({imei, latitude, longitude}) => (<Marker key={imei} position={[latitude, longitude]}>
+            <Popup/>
+        </Marker>)) : null;
 
         return (
             <Aux>
-                <Col xl={12}>
-                        <Card>
-                            <Card.Header>
-                                <Card.Title as="h5">Map</Card.Title>
-                            </Card.Header>
-                            <Card.Body>
-                                <div >
-                                    <Map style={{height: "800px"}} center={[48.86, 2.34]} zoom={10}>
-                                        <TileLayer
-                                            url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
-                                        />
-                                        {markers}
-                                    </Map>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                </Col>
+                <Map style={{height: "400px"}} center={[48.86, 2.34]} zoom={10}>
+                    <TileLayer
+                        url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                    />
+                    {markers}
+                </Map>
+                <Card>
+                    <Card.Header>
+                        <Card.Title as="h5">Véhicules</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Table responsive>
+                            <tbody>
+                            {elements}
+                            </tbody>
+                        </Table>
+                    </Card.Body>
+                </Card>
             </Aux>
         );
     }
@@ -67,7 +75,7 @@ class RealTime extends React.Component {
 
 const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadRecords }, dispatch) });
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadLastRecords }, dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RealTime);
 
