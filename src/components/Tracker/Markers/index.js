@@ -14,5 +14,6 @@ module.exports = {
     }),
     BLUE_MARKER_ICON: getMarkerIcon('blue'),
     GREEN_MARKER_ICON: getMarkerIcon('green'),
-    RED_MARKER_ICON: getMarkerIcon('red')
+    RED_MARKER_ICON: getMarkerIcon('red'),
+    YELLOW_MARKER_ICON: getMarkerIcon('yellow')
 };

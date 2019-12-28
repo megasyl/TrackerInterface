@@ -8,6 +8,8 @@ import { loadLastRecords } from "../../../store/actions/records";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from "../../../components/Tracker/RealTime/TableElement";
+import { GREEN_MARKER_ICON, YELLOW_MARKER_ICON, RED_MARKER_ICON } from '../../../components/Tracker/Markers';
+import moment from "moment";
 
 Leaflet.Icon.Default.imagePath =
     '../node_modules/leaflet';
@@ -44,7 +46,8 @@ class RealTime extends React.Component {
             console.log('isSelected ? ', selected ? selected.key: "null", i, isSelected)
             return (<JourneyTableElement key={i} isSelected={isSelected} record={{...record, key:i}}/>);
         }) : [];
-        const markers = records ? records.map(({imei, latitude, longitude}) => (<Marker key={imei} position={[latitude, longitude]}>
+        const getIcon = (record) => record.ignition ? GREEN_MARKER_ICON : moment().diff(moment(record.timestamp)) > 1800000 ? RED_MARKER_ICON: YELLOW_MARKER_ICON;
+        const markers = records ? records.map((record) => (<Marker key={record.imei} icon={getIcon(record)} position={[record.latitude, record.longitude]}>
             <Popup/>
         </Marker>)) : null;
 
