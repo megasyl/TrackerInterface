@@ -78,8 +78,22 @@ class Journey extends React.Component {
                     <Card.Header>
                         <Card.Title as="h5">Trajets</Card.Title>
                     </Card.Header>
-                    <Card.Body>
+                    <Card.Body style={{fontSize: 12}}>
                         <Table responsive>
+                            <thead>
+                            <tr>
+                                <th>IMEI</th>
+                                <th>Date</th>
+                                <th>Heure départ</th>
+                                <th>Adresse départ</th>
+                                <th>Heure arrivée</th>
+                                <th>Adresse arrivée</th>
+                                <th>Vitesse max</th>
+                                <th>Vitesse moyenne</th>
+                                <th>Temps</th>
+                                <th>Distance</th>
+                            </tr>
+                            </thead>
                             <tbody>
                             {elements}
                             </tbody>

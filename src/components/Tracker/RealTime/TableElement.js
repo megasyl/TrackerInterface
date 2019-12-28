@@ -30,13 +30,13 @@ export class TableElement extends Component {
 
         return (
             <tr onClick={this.selectRecord} className={this.props.isSelected ? "journey-selected" : "journey-hover"}>
-                <th scope="row">{record.imei}</th>
+                <td scope="row">{record.imei}</td>
                 <td>{date.format(('DD/MM/YY'))}</td>
                 <td>{date.format('HH:mm:ss')}</td>
                 <td>{record.address}</td>
                 <td>{record.speed} km/h</td>
                 <td title={label}>
-                    <span className="float-right d-flex align-items-center"><i className={className}/></span>
+                    <i className={className}/>
                 </td>
             </tr>
         );

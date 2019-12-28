@@ -65,6 +65,16 @@ class RealTime extends React.Component {
                     </Card.Header>
                     <Card.Body>
                         <Table responsive>
+                            <thead>
+                            <tr>
+                                <th>IMEI</th>
+                                <th>Date</th>
+                                <th>Heure</th>
+                                <th>Adresse</th>
+                                <th>Vitesse</th>
+                                <th>Statut</th>
+                            </tr>
+                            </thead>
                             <tbody>
                             {elements}
                             </tbody>
