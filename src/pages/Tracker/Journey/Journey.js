@@ -9,7 +9,7 @@ import { loadJourneys } from "../../../store/actions/journey";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from '../../../components/Tracker/Journey/TableElement';
-import { GREEN_MARKER_ICON, RED_MARKER_ICON } from '../../../components/Tracker/Markers';
+import { GREEN_MARKER_ICON, RED_MARKER_ICON, POINT_ICON } from '../../../components/Tracker/Markers';
 
 Leaflet.Icon.Default.imagePath =
     '../node_modules/leaflet';
@@ -53,6 +53,11 @@ class Journey extends React.Component {
             line = (<Polyline key="journeyLine" positions={selected.interpolatedPoints.map(({location}) => [location.latitude, location.longitude])}/>);
             const departureRecord = selected.records[0];
             const arrivalRecord = selected.records[selected.records.length - 1];
+            selected.snappedPoints.forEach(snappedPoint => {
+                markers.push(<Marker icon={POINT_ICON} key={snappedPoint.originalIndex} position={[snappedPoint.location.latitude, snappedPoint.location.longitude]}>
+                    <Popup>{selected.records[snappedPoint.originalIndex].timestamp}</Popup>
+                </Marker>);
+            });
             markers.push((<Marker icon={GREEN_MARKER_ICON} key="journeyDeparture" position={[departureRecord.latitude, departureRecord.longitude]}>
                 <Popup>{selected.beginAddress}</Popup>
             </Marker>));
@@ -62,10 +67,8 @@ class Journey extends React.Component {
 
         }
 
-
         return (
             <Aux>
-
                     <Map style={{height: "400px"}} center={[48.86, 2.34]} zoom={10}>
                         <TileLayer
                             url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"

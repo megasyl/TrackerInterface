@@ -27,7 +27,10 @@ export class TableElement extends Component {
             <tr onClick={this.selectJourney} className={this.props.isSelected ? "journey-selected" : "journey-hover"}>
                 <th scope="row">{journey.imei}</th>
                 <td>{beginDate.format(('DD/MM/YY'))}</td>
-                <td>{beginDate.format('hh:mm:ss')} -> {endDate.format('hh:mm:ss')}</td>
+                <td>{beginDate.format('HH:mm:ss')}</td>
+                <td>{journey.beginAddress}</td>
+                <td>{endDate.format('HH:mm:ss')}</td>
+                <td>{journey.endAddress}</td>
                 <td>{readableDuration}</td>
                 <td>x kms</td>
             </tr>
