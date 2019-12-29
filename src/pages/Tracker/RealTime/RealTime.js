@@ -29,23 +29,27 @@ class RealTime extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.props.actions.loadLastRecords();
+        this.ws = new WebSocket('ws://server.lasjunies.fr:5050');
     }
-    ws = new WebSocket('ws://server.lasjunies.fr:5050');
 
     componentDidMount() {
         this.ws.onopen = () => {
             console.log('connected')
-        }
+        };
 
         this.ws.onmessage = evt => {
             const record = JSON.parse(evt.data);
-            this.props.actions.updateRecord(record)
+            this.props.actions.updateRecord(record);
             console.log("update record", record)
-        }
+        };
 
         this.ws.onclose = () => {
             console.log('disconnected')
-        }
+        };
+    }
+
+    componentWillUnmount() {
+        this.ws.close();
     }
 
     componentDidUpdate(prevProps) {
