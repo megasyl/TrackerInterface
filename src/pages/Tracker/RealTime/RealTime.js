@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Row, Col, Card, Form, InputGroup, Button, Table} from 'react-bootstrap';
 import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
-import { loadLastRecords } from "../../../store/actions/records";
+import { loadLastRecords, updateRecord } from "../../../store/actions/records";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from "../../../components/Tracker/RealTime/TableElement";
@@ -30,8 +30,22 @@ class RealTime extends React.Component {
         super(props, context);
         this.props.actions.loadLastRecords();
     }
+    ws = new WebSocket('ws://server.lasjunies.fr:5050');
 
     componentDidMount() {
+        this.ws.onopen = () => {
+            console.log('connected')
+        }
+
+        this.ws.onmessage = evt => {
+            const record = JSON.parse(evt.data);
+            this.props.actions.updateRecord(record)
+            console.log("update record", record)
+        }
+
+        this.ws.onclose = () => {
+            console.log('disconnected')
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -88,7 +102,7 @@ class RealTime extends React.Component {
 
 const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadLastRecords }, dispatch) });
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadLastRecords, updateRecord }, dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RealTime);
 

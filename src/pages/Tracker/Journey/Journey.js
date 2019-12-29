@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from '../../../components/Tracker/Journey/TableElement';
 import { GREEN_MARKER_ICON, RED_MARKER_ICON, POINT_ICON } from '../../../components/Tracker/Markers';
+import UcFirst from "../../../App/components/UcFirst";
 
 Leaflet.Icon.Default.imagePath =
     '../node_modules/leaflet';
@@ -35,6 +36,11 @@ class Journey extends React.Component {
 
     componentDidUpdate(prevProps) {
         console.log('didupdate', this.props, prevProps)
+    }
+
+    search(event) {
+        if(event.target.value.length >= 3)
+        this.props.actions.loadJourneys({search: event.target.value});
     }
 
     render() {
@@ -79,6 +85,18 @@ class Journey extends React.Component {
                         <Card.Title as="h5">Trajets</Card.Title>
                     </Card.Header>
                     <Card.Body style={{fontSize: 12}}>
+                        <Row>
+                            <Col>
+                                <Form>
+                                    <Form.Group className="mb-2 mr-5">
+                                        <Form.Label srOnly>Recherche </Form.Label>
+                                        <Form.Control onChange={this.search.bind(this)} size="sm" type="text" placeholder="IMEI, Adresse" />
+                                    </Form.Group>
+
+                                </Form>
+                            </Col>
+                        </Row>
+                        <hr/>
                         <Table responsive>
                             <thead>
                             <tr>

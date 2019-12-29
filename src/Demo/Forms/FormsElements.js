@@ -16,7 +16,7 @@ class FormsElements extends React.Component {
                                 <Card.Title as="h5">Basic Component</Card.Title>
                             </Card.Header>
                             <Card.Body>
-                                <h5>Form controls</h5>
+                                <h5>sForm controls</h5>
                                 <hr/>
                                 <Row>
                                     <Col md={6}>

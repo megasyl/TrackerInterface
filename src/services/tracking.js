@@ -1,3 +1,4 @@
+import qs from 'qs';
 const trackingApiUrl = 'http://server.lasjunies.fr:8080';
 
 export default class TrackingAPI {
@@ -25,7 +26,8 @@ export default class TrackingAPI {
 
     static async getAllJourneys(filters) {
         try {
-            const response = await fetch(`${trackingApiUrl}/v1/journeys`, {
+            const params = qs.stringify(filters);
+            const response = await fetch(`${trackingApiUrl}/v1/journeys?${params}`, {
                 method: 'GET',
             });
             return response.json();

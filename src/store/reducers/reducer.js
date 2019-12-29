@@ -28,6 +28,22 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 ...action.payload
             };
+        case 'SELECT_RECORD':
+            return {
+                ...state,
+                ...action.payload
+            };
+        case 'UPDATE_RECORD':
+            const records = state.records.map(record => {
+                if (action.payload.record.imei === record.imei)
+                    return action.payload.record;
+                return record;
+            });
+            console.log('reudcer, records :', state.records);
+            return {
+                ...state,
+                records
+            };
         case actionTypes.COLLAPSE_MENU:
             return {
                 ...state,
