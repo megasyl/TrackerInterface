@@ -8,7 +8,7 @@ import { loadLastRecords, updateRecord } from "../../../store/actions/records";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from "../../../components/Tracker/RealTime/TableElement";
-import { GREEN_MARKER_ICON, YELLOW_MARKER_ICON, RED_MARKER_ICON } from '../../../components/Tracker/Markers';
+import { GREEN_MARKER_ICON, RED_MARKER_ICON } from '../../../components/Tracker/Markers';
 import moment from "moment";
 
 Leaflet.Icon.Default.imagePath =
@@ -64,14 +64,14 @@ class RealTime extends React.Component {
             console.log('isSelected ? ', selected ? selected.key: "null", i, isSelected)
             return (<JourneyTableElement key={i} isSelected={isSelected} record={{...record, key:i}}/>);
         }) : [];
-        const getIcon = (record) => record.ignition ? GREEN_MARKER_ICON : moment().diff(moment(record.timestamp)) > 1800000 ? RED_MARKER_ICON: YELLOW_MARKER_ICON;
+        const getIcon = (record) => record.ignition ? GREEN_MARKER_ICON : RED_MARKER_ICON;
         const markers = records ? records.map((record) => (<Marker key={record.imei} icon={getIcon(record)} position={[record.latitude, record.longitude]}>
             <Popup/>
         </Marker>)) : null;
 
         return (
             <Aux>
-                <Map style={{height: "400px"}} center={[48.86, 2.34]} zoom={10}>
+                <Map style={{height: "400px"}} center={this.props.center || [48.86, 2.34]} zoom={this.props.selected ? 15 : 10}>
                     <TileLayer
                         url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
                     />
@@ -104,7 +104,9 @@ class RealTime extends React.Component {
     }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => ({
+    ...state
+});
 
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadLastRecords, updateRecord }, dispatch) });
 

@@ -29,8 +29,10 @@ const reducer = (state = initialState, action) => {
                 ...action.payload
             };
         case 'SELECT_RECORD':
+            const record = action.payload.selected;
             return {
                 ...state,
+                center: [record.latitude, record.longitude],
                 ...action.payload
             };
         case 'UPDATE_RECORD':
@@ -39,9 +41,9 @@ const reducer = (state = initialState, action) => {
                     return action.payload.record;
                 return record;
             });
-            console.log('reudcer, records :', state.records);
             return {
                 ...state,
+                center: state.selected ? [state.selected .latitude, state.selected .longitude] : state.center,
                 records
             };
         case actionTypes.COLLAPSE_MENU:
