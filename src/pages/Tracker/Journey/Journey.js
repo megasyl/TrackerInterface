@@ -39,8 +39,12 @@ class Journey extends React.Component {
     }
 
     search(event) {
-        if(event.target.value.length >= 3)
-        this.props.actions.loadJourneys({search: event.target.value});
+        if(event.target.value.length >= 3) {
+            this.props.actions.loadJourneys({search: event.target.value});
+        }
+        else if (event.target.value.length === 2) {
+            this.props.actions.loadJourneys();
+        }
     }
 
     render() {
