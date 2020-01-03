@@ -22,7 +22,6 @@ export class TableElement extends Component {
         var msDuration = endDate.diff(beginDate);
         var duration = moment.duration(msDuration);
         const readableDuration = Math.floor(duration.asHours()) + moment.utc(msDuration).format(":mm:ss");
-        console.log('IAM SELECTED', this.props.isSelected)
         return (
             <tr onClick={this.selectJourney} className={this.props.isSelected ? "journey-selected" : "journey-hover"}>
                 <td scope="row">{journey.imei}</td>

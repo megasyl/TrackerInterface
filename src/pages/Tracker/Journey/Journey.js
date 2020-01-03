@@ -1,27 +1,13 @@
 import React from 'react';
-import Leaflet from 'leaflet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Row, Col, Card, Form, InputGroup, Button, Table} from 'react-bootstrap';
-import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet'
 import { loadJourneys } from "../../../store/actions/journey";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from '../../../components/Tracker/Journey/TableElement';
-import { GREEN_MARKER_ICON, RED_MARKER_ICON, POINT_ICON } from '../../../components/Tracker/Markers';
-import UcFirst from "../../../App/components/UcFirst";
-
-Leaflet.Icon.Default.imagePath =
-    '../node_modules/leaflet';
-
-delete Leaflet.Icon.Default.prototype._getIconUrl;
-
-Leaflet.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-    iconUrl: require('leaflet/dist/images/marker-icon.png'),
-    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-});
-
+import { START, STOP, createPoint, createMarker } from '../../../components/Tracker/Markers';
+import {Map, Marker, GoogleApiWrapper, Polyline}  from 'google-maps-react';
 
 
 
@@ -35,7 +21,6 @@ class Journey extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log('didupdate', this.props, prevProps)
     }
 
     search(event) {
@@ -53,37 +38,50 @@ class Journey extends React.Component {
         let markers = [];
         const elements = journeys.map((journey, i) => {
             const isSelected = selected && selected.key === i;
-            console.log('isSelected ? ', selected ? selected.key: "null", i, isSelected)
             return (<JourneyTableElement key={i} isSelected={isSelected} journey={{...journey, key:i}}/>);
         });
         let line = null;
         if (selected) {
-            line = (<Polyline key="journeyLine" positions={selected.interpolatedPoints.map(({location}) => [location.latitude, location.longitude])}/>);
-            const departureRecord = selected.records[0];
-            const arrivalRecord = selected.records[selected.records.length - 1];
-            selected.snappedPoints.forEach(snappedPoint => {
-                markers.push(<Marker icon={POINT_ICON} key={snappedPoint.originalIndex} position={[snappedPoint.location.latitude, snappedPoint.location.longitude]}>
-                    <Popup>{selected.records[snappedPoint.originalIndex].timestamp}</Popup>
-                </Marker>);
-            });
-            markers.push((<Marker icon={GREEN_MARKER_ICON} key="journeyDeparture" position={[departureRecord.latitude, departureRecord.longitude]}>
-                <Popup>{selected.beginAddress}</Popup>
-            </Marker>));
-            markers.push((<Marker icon={RED_MARKER_ICON} key="journeyArrival" position={[arrivalRecord.latitude, arrivalRecord.longitude]}>
-                <Popup>{selected.endAddress}</Popup>
-            </Marker>));
+            const route = selected.interpolatedPoints;
+            const snappedPoints = selected.snappedPoints.map(p => ({lat: p.location.latitude, lng: p.location.longitude}));
+            line = (<Polyline
+                strokeColor="#3689FA"
+                strokeOpacity={0.8}
+                strokeWeight={4}
+                path={route}/>);
 
+             markers = snappedPoints.map((point, i) => {
+                 let icon = createPoint();
+                 if (i === 0) icon = createMarker(START);
+                 if (i === snappedPoints.length - 1) icon = createMarker(STOP);
+                 return (<Marker
+                     icon={icon}
+                     name={'SOMA'}
+                     position={point} />)
+             });
         }
 
         return (
             <Aux>
-                    <Map style={{height: "400px"}} center={[48.86, 2.34]} zoom={10}>
-                        <TileLayer
-                            url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
-                        />
-                        {line}
-                        {markers}
-                    </Map>
+                <div style={{height: '400px', width: '100%'}}>
+                <Map
+                    centerAroundCurrentLocation
+                    className="map"
+                    google={this.props.google}
+                    zoom={12}>
+                    {line}
+                    {markers}
+                    {/*
+                    <InfoWindow
+                        marker={this.state.activeMarker}
+                        onClose={this.onInfoWindowClose}
+                        visible={this.state.showingInfoWindow}>
+                        <div>
+                            <h3>{this.state.selectedPlace.name}</h3>
+                        </div>
+                    </InfoWindow>*/}
+                </Map></div>
+
                 <Card>
                     <Card.Header>
                         <Card.Title as="h5">Trajets</Card.Title>
@@ -131,5 +129,9 @@ const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadJourneys }, dispatch) });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Journey);
+const googleApiWrapper = GoogleApiWrapper({
+    apiKey: 'AIzaSyBJcBASC5XBVbIaQ4B1RGmp1iGNcHCvO-o'
+})(Journey);
+
+export default connect(mapStateToProps, mapDispatchToProps)(googleApiWrapper);
 

@@ -61,7 +61,6 @@ class LineChart extends React.Component {
                         y: 'y',
                         height: 300,
                         renderEnd: function(){
-                            console.log('renderEnd');
                         }
                     })
                 }
