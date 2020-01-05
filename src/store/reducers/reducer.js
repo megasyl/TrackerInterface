@@ -29,10 +29,10 @@ const reducer = (state = initialState, action) => {
                 ...action.payload
             };
         case 'SELECT_RECORD':
-            const record = action.payload.selected;
+            const record = action.payload.selectedRecord;
             return {
                 ...state,
-                center: [record.latitude, record.longitude],
+                center: { lat: record.latitude, lng: record.longitude },
                 ...action.payload
             };
         case 'UPDATE_RECORD':

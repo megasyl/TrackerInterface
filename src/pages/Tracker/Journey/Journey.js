@@ -34,16 +34,16 @@ class Journey extends React.Component {
 
     render() {
         const journeys = this.props.journeys || [];
-        const { selected } = this.props;
+        const { selectedJourney } = this.props;
         let markers = [];
         const elements = journeys.map((journey, i) => {
-            const isSelected = selected && selected.key === i;
+            const isSelected = selectedJourney && selectedJourney.key === i;
             return (<JourneyTableElement key={i} isSelected={isSelected} journey={{...journey, key:i}}/>);
         });
         let line = null;
-        if (selected) {
-            const route = selected.interpolatedPoints;
-            const snappedPoints = selected.snappedPoints.map(p => ({lat: p.location.latitude, lng: p.location.longitude}));
+        if (selectedJourney) {
+            const route = selectedJourney.interpolatedPoints;
+            const snappedPoints = selectedJourney.snappedPoints.map(p => ({lat: p.location.latitude, lng: p.location.longitude}));
             line = (<Polyline
                 strokeColor="#3689FA"
                 strokeOpacity={0.8}
@@ -68,9 +68,15 @@ class Journey extends React.Component {
                     centerAroundCurrentLocation
                     className="map"
                     google={this.props.google}
+                    initialCenter={{
+                        lat: 48.866667,
+                        lng: 2.333333
+                    }}
+                    center={this.props.center}
                     zoom={12}>
                     {line}
                     {markers}
+
                     {/*
                     <InfoWindow
                         marker={this.state.activeMarker}

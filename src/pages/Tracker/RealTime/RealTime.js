@@ -33,9 +33,9 @@ class RealTime extends React.Component {
 
 
     render() {
-        const { records, selected } = this.props;
+        const { records, selectedRecord } = this.props;
         const elements = records ? records.map((record, i) => {
-            const isSelected = selected && selected.key === i;
+            const isSelected = selectedRecord && selectedRecord.key === i;
             return (<JourneyTableElement key={i} isSelected={isSelected} record={{...record, key:i}}/>);
         }) : [];
         const getIcon = (record) => record.ignition && moment().diff(moment(record.timestamp)) < 1800000 ? createMarker(GREEN) : null;
@@ -49,6 +49,11 @@ class RealTime extends React.Component {
                         centerAroundCurrentLocation
                         className="map"
                         google={this.props.google}
+                        initialCenter={{
+                            lat: 48.866667,
+                            lng: 2.333333
+                        }}
+                        center={this.props.center}
                         zoom={12}>
                         {markers}
                     </Map></div>

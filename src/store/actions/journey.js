@@ -11,7 +11,7 @@ export const loadJourneysSuccess = (journeys) => {
 export const selectJourney = (journey, key) => ({
     type: 'SELECT_JOURNEY',
     payload: {
-        selected: journey,
+        selectedJourney: journey,
         selectedKey: key,
     },
 });

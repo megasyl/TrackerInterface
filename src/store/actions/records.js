@@ -11,7 +11,7 @@ export const loadRecordsSuccess = (records) => {
 export const selectRecord = (record, key) => ({
     type: 'SELECT_RECORD',
     payload: {
-        selected: record,
+        selectedRecord: record,
         selectedKey: key,
     },
 });
