@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {Card, Table} from 'react-bootstrap';
+import {Card, Col, Row, Tab, Table, Tabs} from 'react-bootstrap';
 import { loadLastRecords, updateRecord } from "../../../store/actions/records";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from "../../../components/Tracker/RealTime/TableElement";
+import Metrics from "../../../components/Tracker/RealTime/Metrics";
 import { createMarker, GREEN  } from '../../../components/Tracker/Markers';
 import {Map, Marker, GoogleApiWrapper, Polyline}  from 'google-maps-react';
 import moment from "moment";
+import avatar1 from "../../../assets/images/user/avatar-1.jpg";
+import DEMO from "../../../store/constant";
+import avatar2 from "../../../assets/images/user/avatar-2.jpg";
+import avatar3 from "../../../assets/images/user/avatar-3.jpg";
 
 
 
@@ -44,41 +49,29 @@ class RealTime extends React.Component {
 
         return (
             <Aux>
-                <div style={{height: '400px', width: '100%'}}>
-                    <Map
-                        centerAroundCurrentLocation
-                        className="map"
-                        google={this.props.google}
-                        initialCenter={{
-                            lat: 48.866667,
-                            lng: 2.333333
-                        }}
-                        center={this.props.center}
-                        zoom={12}>
-                        {markers}
-                    </Map></div>
-                <Card>
-                    <Card.Header>
-                        <Card.Title as="h5">Véhicules</Card.Title>
-                    </Card.Header>
-                    <Card.Body>
-                        <Table responsive>
-                            <thead>
-                            <tr>
-                                <th>IMEI</th>
-                                <th>Date</th>
-                                <th>Heure</th>
-                                <th>Adresse</th>
-                                <th>Vitesse</th>
-                                <th>Statut</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                <Row>
+                    <Card style={{height: '85vh', width: '30%'}}>
+                        <Card.Header>
+                            <Card.Title as="h5">Véhicules</Card.Title>
+                        </Card.Header>
+                        <Card.Body style={{padding: 0, marginLeft: 15, marginRight: -15}}>
                             {elements}
-                            </tbody>
-                        </Table>
-                    </Card.Body>
-                </Card>
+                        </Card.Body>
+                    </Card>
+                    <div style={{height: '85vh', width: '70%'}}>
+                        <Map
+                            centerAroundCurrentLocation
+                            className="map"
+                            google={this.props.google}
+                            initialCenter={{
+                                lat: 48.866667,
+                                lng: 2.333333
+                            }}
+                            center={this.props.center}
+                            zoom={12}>
+                            {markers}
+                        </Map></div>
+                </Row>
             </Aux>
         );
     }

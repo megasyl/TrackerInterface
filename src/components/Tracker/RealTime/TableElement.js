@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 import { selectRecord } from "../../../store/actions/records";
 
@@ -29,12 +29,26 @@ export class TableElement extends Component {
         }
 
         return (
+            <Row onClick={this.selectRecord} style={{width: '100%', paddingTop: '10px', paddingBottom: '10px'}} className={this.props.isSelected ? "journey-selected" : "journey-hover"}>
+                <Col style={{width: '5%', flexGrow: 0}}>
+                    <div>
+                        <i className={className}/>
+                    </div>
+                </Col>
+                <Col  style={{width: '100%', margin: 0}}>
+                    <div onClick={this.selectRecord} style={{width: '100%', margin: 0}}>
+                        <div style={{width: '100%'}}><b>{record.imei}</b></div>
+                        <div style={{width: '100%'}}>{record.address}</div>
+                    </div>
+                </Col>
+            </Row>
+
+        );
+
+        return (
             <tr onClick={this.selectRecord} className={this.props.isSelected ? "journey-selected" : "journey-hover"}>
                 <td scope="row">{record.imei}</td>
-                <td>{date.format(('DD/MM/YY'))}</td>
-                <td>{date.format('HH:mm:ss')}</td>
                 <td>{record.address}</td>
-                <td>{record.speed} km/h</td>
                 <td title={label}>
                     <i className={className}/>
                 </td>

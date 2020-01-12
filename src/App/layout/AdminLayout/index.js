@@ -81,7 +81,7 @@ class AdminLayout extends Component {
             ) : null;
         });
 
-        const navComponents = this.props.user ? [(<Navigation />), (<NavBar user={this.props.user} />)]
+        const navComponents = this.props.user ? [(<Navigation />)]//, (<NavBar user={this.props.user} />)]
             : (<Redirect to={'/login'} />);
 
 

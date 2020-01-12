@@ -52,6 +52,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 ...action.payload
             };
+        case 'SELECT_JOURNEY_MARKER':
+            return {
+                ...state,
+                ...action.payload
+            };
         case 'SELECT_RECORD':
             const record = action.payload.selectedRecord;
             return {

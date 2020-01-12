@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Row, Col, Card, Form, Table} from 'react-bootstrap';
-import { loadJourneys } from "../../../store/actions/journey";
+import { loadJourneys, selectJourneyMarker } from "../../../store/actions/journey";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from '../../../components/Tracker/Journey/TableElement';
@@ -32,14 +32,24 @@ class Journey extends React.Component {
         }
     }
 
+    onMarkerClick = (props, marker, e) => {
+        this.props.actions.selectJourneyMarker(marker);
+    }
+
     render() {
+        console.log("selected marker", this.props.selectedJourneyMarker)
         const journeys = this.props.journeys || [];
         const { selectedJourney } = this.props;
         let markers = [];
+        const marker = this.props.selectedJourneyMarker;
+        const position = marker ? { lat:marker.info.latitude, lng: marker.info.longitude } : '';
+        console.log(position)
         const tooltip = (<InfoWindow
-            marker={this.props.selected} >
+            visible={true}
+            marker={marker}>
             <div>
-                <h3>speed, timestamp ...</h3>
+                <div>Vitesse: { marker ? marker.info.speed : 'unknown'}</div>
+                <div>Date: {marker ? marker.info.timestamp : 'unkonwn'}</div>
             </div>
         </InfoWindow>);
         const elements = journeys.map((journey, i) => {
@@ -49,7 +59,9 @@ class Journey extends React.Component {
         let line = null;
         if (selectedJourney) {
             const route = selectedJourney.interpolatedPoints;
-            const snappedPoints = selectedJourney.snappedPoints.map(p => ({lat: p.location.latitude, lng: p.location.longitude}));
+            const recordsInfo = selectedJourney.records;
+
+            const snappedPoints = selectedJourney.snappedPoints;
             line = (<Polyline
                 strokeColor="#3689FA"
                 strokeOpacity={0.8}
@@ -61,10 +73,11 @@ class Journey extends React.Component {
                  if (i === 0) icon = createMarker(START);
                  if (i === snappedPoints.length - 1) icon = createMarker(STOP);
                  return (<Marker
-                     onClick={() => console.log("clic")}
+                     key={i}
+                     onClick={this.onMarkerClick}
                      icon={icon}
-                     name={'SOMA'}
-                     position={point} />)
+                     info={recordsInfo[point.originalIndex]}
+                     position={{lat: point.location.latitude, lng: point.location.longitude}} />)
              });
         }
 
@@ -132,7 +145,7 @@ class Journey extends React.Component {
 
 const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadJourneys }, dispatch) });
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadJourneys, selectJourneyMarker }, dispatch) });
 
 const googleApiWrapper = GoogleApiWrapper({
     apiKey: 'AIzaSyBJcBASC5XBVbIaQ4B1RGmp1iGNcHCvO-o'
