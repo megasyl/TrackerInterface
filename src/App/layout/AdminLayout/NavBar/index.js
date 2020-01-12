@@ -18,7 +18,7 @@ class NavBar extends Component {
         if (this.props.collapseMenu) {
             toggleClass = [...toggleClass, 'on'];
         }
-
+        console.log("PROPSSSI", this.props)
         return (
             <Aux>
                 <header className={headerClass.join(' ')}>
@@ -28,13 +28,13 @@ class NavBar extends Component {
                             <div className="b-bg">
                                 <i className="feather icon-trending-up"/>
                             </div>
-                            <span className="b-title">GeoHM</span>
+                            <span className="b-title">Locit</span>
                         </a>
                     </div>
                     <a className="mobile-menu" id="mobile-header" href={DEMO.BLANK_LINK}><i className="feather icon-more-horizontal"/></a>
                     <div className="collapse navbar-collapse">
                         <NavLeft/>
-                        <NavRight rtlLayout={this.props.rtlLayout} />
+                        <NavRight user={this.props.user} rtlLayout={this.props.rtlLayout} />
                     </div>
                 </header>
             </Aux>
@@ -47,7 +47,8 @@ const mapStateToProps = state => {
         rtlLayout: state.rtlLayout,
         headerBackColor: state.headerBackColor,
         headerFixedLayout: state.headerFixedLayout,
-        collapseMenu: state.collapseMenu
+        collapseMenu: state.collapseMenu,
+        user: state.user
     }
 };
 

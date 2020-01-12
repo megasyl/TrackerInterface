@@ -5,8 +5,9 @@ import Aux from "../../../../../hoc/_Aux";
 import DEMO from "../../../../../store/constant";
 
 import Avatar1 from '../../../../../assets/images/user/avatar-1.jpg';
-import Avatar2 from '../../../../../assets/images/user/avatar-2.jpg';
-import Avatar3 from '../../../../../assets/images/user/avatar-3.jpg';
+import {bindActionCreators} from "redux";
+import {removeAuthCookie} from "../../../../../store/actions/auth";
+import {connect} from "react-redux";
 
 class NavRight extends Component {
     state = {
@@ -14,7 +15,7 @@ class NavRight extends Component {
     };
 
     render() {
-
+        console.log("PROPSSSS", this.props)
         return (
             <Aux>
                 <ul className="navbar-nav ml-auto">
@@ -26,16 +27,13 @@ class NavRight extends Component {
                             <Dropdown.Menu alignRight className="profile-notification">
                                 <div className="pro-head">
                                     <img src={Avatar1} className="img-radius" alt="User Profile"/>
-                                    <span>John Doe</span>
+                                    <span>{this.props.user.firstName} {this.props.user.lastName}</span>
                                     <a href={DEMO.BLANK_LINK} className="dud-logout" title="Logout">
                                         <i className="feather icon-log-out"/>
                                     </a>
                                 </div>
                                 <ul className="pro-body">
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-settings"/> Settings</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-user"/> Profile</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-mail"/> My Messages</a></li>
-                                    <li><a href={DEMO.BLANK_LINK} className="dropdown-item"><i className="feather icon-lock"/> Lock Screen</a></li>
+                                    <li><a href='#' onClick={this.props.actions.removeAuthCookie} className="dropdown-item"><i className="feather icon-log-out"/> Déconnexion</a></li>
                                 </ul>
                             </Dropdown.Menu>
                         </Dropdown>
@@ -46,4 +44,14 @@ class NavRight extends Component {
     }
 }
 
-export default NavRight;
+
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators({ removeAuthCookie }, dispatch)
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (NavRight);
+

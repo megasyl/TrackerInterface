@@ -31,8 +31,8 @@ const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 
 const routes = [
     { path: '/dashboard/default', exact: true, name: 'Default', component: DashboardDefault },
-    { path: '/tracker/realtime', exact: true, name: 'Temps réel', component: TrackerRealTime },
-    { path: '/tracker/journey', exact: true, name: 'Trajets', component: TrackerJourney },
+    { path: '/tracker/realtime', userRole: ['USER', 'ADMIN'], exact: true, name: 'Temps réel', component: TrackerRealTime },
+    { path: '/tracker/journey', userRole: ['USER', 'ADMIN'], exact: true, name: 'Trajets', component: TrackerJourney },
     { path: '/basic/button', exact: true, name: 'Basic Button', component: UIBasicButton },
     { path: '/basic/badges', exact: true, name: 'Basic Badges', component: UIBasicBadges },
     { path: '/basic/breadcrumb-paging', exact: true, name: 'Basic Breadcrumb Pagination', component: UIBasicBreadcrumbPagination },

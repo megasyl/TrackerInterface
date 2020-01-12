@@ -16,6 +16,14 @@ export const selectJourney = (journey, key) => ({
     },
 });
 
+export const selectJourneyMarker = (marker) => ({
+    type: 'SELECT_JOURNEY_MARKER',
+    payload: {
+        selectedJourneyMarker: marker,
+    },
+});
+
+
 /**
  * Action to fetch journeys from API, then dispatch it to the reducer
  * todo error action

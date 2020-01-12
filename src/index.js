@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, compose } from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 
@@ -10,18 +10,22 @@ import { applyMiddleware } from 'redux';
 import reducer from './store/reducers/reducer';
 import recordsReducer from './store/reducers/records';
 import config from './config';
+import Cookies from 'js-cookie';
+import { createCookieMiddleware } from 'redux-cookie';
+import { CookiesProvider } from 'react-cookie';
 
 const globalReducer = combineReducers({
     theme: reducer,
     records: recordsReducer
 });
-const store = createStore(reducer, undefined, applyMiddleware(thunk));
+const store = createStore(reducer, undefined, applyMiddleware(thunk, createCookieMiddleware(Cookies)));
 
 const app = (
     <Provider store={store}>
         <BrowserRouter basename={config.basename}>
-            {/* basename="/datta-able" */}
-            <App />
+            <CookiesProvider>
+                <App />
+            </CookiesProvider>
         </BrowserRouter>
     </Provider>
 );

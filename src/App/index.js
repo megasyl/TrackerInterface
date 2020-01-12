@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import Loadable from 'react-loadable';
 
 import '../../node_modules/font-awesome/scss/font-awesome.scss';
@@ -23,9 +23,8 @@ class App extends Component {
                   path={route.path}
                   exact={route.exact}
                   name={route.name}
-                  render={props => (
-                      <route.component {...props} />
-                  )} />
+                  render={props => (<route.component {...props} />)
+                  } />
           ) : (null);
         });
 

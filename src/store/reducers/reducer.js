@@ -12,6 +12,10 @@ const reducer = (state = initialState, action) => {
     let trigger = [];
     let open = [];
 
+    console.log(action.type, {
+        ...state,
+        ...action.payload
+    })
     switch (action.type) {
         case 'LOAD_RECORDS_SUCCESS':
             return {
@@ -22,6 +26,26 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload
+            };
+        case 'LOGIN_SUCCESS':
+            return {
+                ...state,
+                ...action.payload
+            };
+        case 'LOGIN_COOKIE_SUCCESS':
+            return {
+                ...state,
+                ...action.payload,
+            };
+        case 'LOGIN_COOKIE_ERROR':
+            return {
+                ...state,
+                ...action.payload,
+            };
+        case 'LOGIN_COOKIE_REMOVE':
+            return {
+                ...state,
+                ...action.payload,
             };
         case 'SELECT_JOURNEY':
             return {

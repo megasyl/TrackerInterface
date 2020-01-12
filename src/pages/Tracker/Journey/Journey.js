@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {Row, Col, Card, Form, InputGroup, Button, Table} from 'react-bootstrap';
+import {Row, Col, Card, Form, Table} from 'react-bootstrap';
 import { loadJourneys } from "../../../store/actions/journey";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from '../../../components/Tracker/Journey/TableElement';
 import { START, STOP, createPoint, createMarker } from '../../../components/Tracker/Markers';
-import {Map, Marker, GoogleApiWrapper, Polyline}  from 'google-maps-react';
+import {Map, Marker, GoogleApiWrapper, Polyline, InfoWindow}  from 'google-maps-react';
 
 
 
@@ -36,6 +36,12 @@ class Journey extends React.Component {
         const journeys = this.props.journeys || [];
         const { selectedJourney } = this.props;
         let markers = [];
+        const tooltip = (<InfoWindow
+            marker={this.props.selected} >
+            <div>
+                <h3>speed, timestamp ...</h3>
+            </div>
+        </InfoWindow>);
         const elements = journeys.map((journey, i) => {
             const isSelected = selectedJourney && selectedJourney.key === i;
             return (<JourneyTableElement key={i} isSelected={isSelected} journey={{...journey, key:i}}/>);
@@ -55,6 +61,7 @@ class Journey extends React.Component {
                  if (i === 0) icon = createMarker(START);
                  if (i === snappedPoints.length - 1) icon = createMarker(STOP);
                  return (<Marker
+                     onClick={() => console.log("clic")}
                      icon={icon}
                      name={'SOMA'}
                      position={point} />)
@@ -76,16 +83,8 @@ class Journey extends React.Component {
                     zoom={12}>
                     {line}
                     {markers}
+                    {tooltip}
 
-                    {/*
-                    <InfoWindow
-                        marker={this.state.activeMarker}
-                        onClose={this.onInfoWindowClose}
-                        visible={this.state.showingInfoWindow}>
-                        <div>
-                            <h3>{this.state.selectedPlace.name}</h3>
-                        </div>
-                    </InfoWindow>*/}
                 </Map></div>
 
                 <Card>

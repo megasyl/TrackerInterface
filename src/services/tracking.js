@@ -35,4 +35,22 @@ export default class TrackingAPI {
             console.log(e)
         }
     }
+
+    static async login(login, password) {
+        const response = await fetch(`${trackingApiUrl}/v1/login`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                login,
+                password
+            })
+        });
+        if (response.ok)
+            return response.json();
+        throw { status: response.status, message: response.statusText }
+
+    }
 }

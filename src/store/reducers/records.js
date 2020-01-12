@@ -1,6 +1,10 @@
 const deviceReducer = (state = {}, action) => {
     switch (action.type) {
-        case 'LOAD_RECORDS_SUCCESS':
+        case 'test':
+            return {
+                ...action.payload
+            };
+        case 'test2':
             return {
                 ...action.payload
             };
