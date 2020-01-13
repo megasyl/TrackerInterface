@@ -18,7 +18,7 @@ class NavBar extends Component {
         if (this.props.collapseMenu) {
             toggleClass = [...toggleClass, 'on'];
         }
-        console.log("PROPSSSI", this.props)
+
         return (
             <Aux>
                 <header className={headerClass.join(' ')}>

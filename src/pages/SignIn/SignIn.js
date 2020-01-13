@@ -30,7 +30,7 @@ class Login extends React.Component {
 
     render () {
         if (this.props.user) {
-            return (<Redirect to={this.props.defaultPath} />)
+            return (<Redirect to={this.props.requestedUrl || this.props.defaultPath} />)
         }
         return(
             <Aux>

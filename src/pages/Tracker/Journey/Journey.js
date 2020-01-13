@@ -83,6 +83,7 @@ class Journey extends React.Component {
 
         return (
             <Aux>
+                <Row>
                 <div style={{height: '400px', width: '100%'}}>
                 <Map
                     centerAroundCurrentLocation
@@ -99,7 +100,8 @@ class Journey extends React.Component {
                     {tooltip}
 
                 </Map></div>
-
+                </Row>
+                <Row>
                 <Card>
                     <Card.Header>
                         <Card.Title as="h5">Trajets</Card.Title>
@@ -138,6 +140,7 @@ class Journey extends React.Component {
                         </Table>
                     </Card.Body>
                 </Card>
+                </Row>
             </Aux>
         );
     }

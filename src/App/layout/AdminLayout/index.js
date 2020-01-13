@@ -32,9 +32,8 @@ class AdminLayout extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props)
         if (!this.props.user) {
-            this.props.actions.loadAuthCookie()
+            this.props.actions.loadAuthCookie(this.props.history.location.pathname)
         }
     }
 
@@ -81,7 +80,8 @@ class AdminLayout extends Component {
             ) : null;
         });
 
-        const navComponents = this.props.user ? [(<Navigation />)]//, (<NavBar user={this.props.user} />)]
+
+        const navComponents = this.props.user ? [(<Navigation />), (<NavBar user={this.props.user} />)]
             : (<Redirect to={'/login'} />);
 
 
@@ -123,6 +123,7 @@ const mapStateToProps = state => {
         layout: state.layout,
         user: state.user,
         loadedCookie: state.loadedCookie,
+        location: state.location
     }
 };
 

@@ -50,7 +50,7 @@ class RealTime extends React.Component {
         return (
             <Aux>
                 <Row>
-                    <Card style={{height: '85vh', width: '30%'}}>
+                    <Card style={{height: '100vh', width: '30%'}}>
                         <Card.Header>
                             <Card.Title as="h5">Véhicules</Card.Title>
                         </Card.Header>
@@ -58,7 +58,7 @@ class RealTime extends React.Component {
                             {elements}
                         </Card.Body>
                     </Card>
-                    <div style={{height: '85vh', width: '70%'}}>
+                    <div style={{height: '100vh', width: '70%'}}>
                         <Map
                             centerAroundCurrentLocation
                             className="map"

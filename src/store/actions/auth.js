@@ -24,11 +24,12 @@ export const loginCookieSuccess = ({data, token}) => {
     };
 };
 
-export const loginCookieError = () => {
+export const loginCookieError = (pathname) => {
     return {
         type: 'LOGIN_COOKIE_ERROR',
         payload: {
             loadedCookie: true,
+            requestedUrl: pathname
         },
     };
 };
@@ -46,16 +47,16 @@ export const loginCookieRemove = () => {
 /**
  * Action to load auth token into store
  */
-export const loadAuthCookie = () =>
+export const loadAuthCookie = (pathname) =>
     async (dispatch) => {
         try {
             const token = get('AUTH_TOKEN');
             if (!token) {
-                return dispatch(loginCookieError())
+                return dispatch(loginCookieError(pathname))
             }
             const { data } = jwt.decode(token);
             if (!data) {
-                return dispatch(loginCookieError())
+                return dispatch(loginCookieError(pathname))
             }
             dispatch(loginCookieSuccess({data, token}))
         } catch (e) {
