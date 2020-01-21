@@ -104,7 +104,7 @@ class Journey extends React.Component {
                 <Row>
                 <Card>
                     <Card.Header>
-                        <Card.Title as="h5">Trajets</Card.Title>
+                        <Card.Title as="h5">Trajets ({journeys.length})</Card.Title>
                     </Card.Header>
                     <Card.Body style={{fontSize: 12}}>
                         <Row>
