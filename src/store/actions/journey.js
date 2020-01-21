@@ -8,7 +8,7 @@ export const loadJourneysSuccess = (journeys) => {
     };
 };
 
-export const selectJourney = (journey, key) => ({
+export const selectJourneySuccess = (journey, key) => ({
     type: 'SELECT_JOURNEY',
     payload: {
         selectedJourney: journey,
@@ -23,6 +23,20 @@ export const selectJourneyMarker = (marker) => ({
     },
 });
 
+/**
+ * Action to fetch journeys from API, then dispatch it to the reducer
+ * todo error action
+ */
+export const selectJourney = (journey, key) =>
+    async (dispatch) => {
+        try {
+            if (!journey.records)
+                journey = await trackingApi.getJourneyById(journey._id);
+            return dispatch(selectJourneySuccess(journey, key))
+        } catch (e) {
+            console.log(e)
+        }
+    };
 
 /**
  * Action to fetch journeys from API, then dispatch it to the reducer

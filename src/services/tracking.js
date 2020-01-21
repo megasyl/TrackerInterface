@@ -36,6 +36,17 @@ export default class TrackingAPI {
         }
     }
 
+    static async getJourneyById(id) {
+        try {
+            const response = await fetch(`${trackingApiUrl}/v1/journeys/${id}`, {
+                method: 'GET',
+            });
+            return response.json();
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     static async login(login, password) {
         const response = await fetch(`${trackingApiUrl}/v1/login`, {
             method: 'POST',

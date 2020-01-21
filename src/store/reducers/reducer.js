@@ -48,9 +48,11 @@ const reducer = (state = initialState, action) => {
                 ...action.payload,
             };
         case 'SELECT_JOURNEY':
+            const { selectedJourney } = action.payload;
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
+                journeys: state.journeys.map(j => j._id === selectedJourney._id ? selectedJourney : j)
             };
         case 'SELECT_JOURNEY_MARKER':
             return {
