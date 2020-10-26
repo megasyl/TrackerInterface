@@ -6,6 +6,7 @@ const initialState = {
     isTrigger: [], //for active default menu, set blank for horizontal
     ...config,
     isFullScreen: false, // static can't change
+    experimentalJourneyDisplay: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -59,6 +60,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload
+            };
+        case 'SELECT_JOURNEY_DISPLAY_MODE':
+            return {
+                ...state,
+                experimentalJourneyDisplay: !state.experimentalJourneyDisplay
             };
         case 'SELECT_RECORD':
             const record = action.payload.selectedRecord;

@@ -23,6 +23,10 @@ export const selectJourneyMarker = (marker) => ({
     },
 });
 
+export const selectJourneyDisplayMode = () => ({
+    type: 'SELECT_JOURNEY_DISPLAY_MODE'
+});
+
 /**
  * Action to fetch journeys from API, then dispatch it to the reducer
  * todo error action

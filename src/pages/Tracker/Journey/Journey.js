@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Row, Col, Card, Form, Table} from 'react-bootstrap';
-import { loadJourneys, selectJourneyMarker } from "../../../store/actions/journey";
+import { loadJourneys, selectJourneyMarker, selectJourneyDisplayMode } from "../../../store/actions/journey";
 import 'leaflet/dist/leaflet.css';
 import Aux from "../../../hoc/_Aux";
 import JourneyTableElement from '../../../components/Tracker/Journey/TableElement';
 import Map from '../../../components/Tracker/Journey/Map';
 import {GoogleApiWrapper}  from 'google-maps-react';
+import Switch from '@material-ui/core/Switch';
 
 
 class Journey extends React.Component {
@@ -31,6 +32,10 @@ class Journey extends React.Component {
         }
     }
 
+    selectJourneyDisplayMode() {
+        this.props.actions.selectJourneyDisplayMode();
+    }
+
     render() {
         const { selectedJourney } = this.props;
         const journeys = this.props.journeys || [];
@@ -45,12 +50,25 @@ class Journey extends React.Component {
                     <Map
                         google={this.props.google}
                         selectedJourney={this.props.selectedJourney}
+                        experimentalJourneyDisplay={this.props.experimentalJourneyDisplay}
                     />
                 </Row>
                 <Row>
                 <Card>
                     <Card.Header>
-                        <Card.Title as="h5">Trajets ({journeys.length})</Card.Title>
+                        <Card.Title style={{width: '100%'}} as="h5">Trajets ({journeys.length})
+                            <div style={{ float: 'right', fontSize: 13 }}>
+                                Trajet intelligent
+                                <Switch
+                                    size="small"
+                                    checked={!!this.props.experimentalJourneyDisplay}
+                                    onChange={this.selectJourneyDisplayMode.bind(this)}
+                                    name="experimentalJourneyDisplay"
+                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                    color="primary"
+                                />
+                            </div>
+                        </Card.Title>
                     </Card.Header>
                     <Card.Body style={{fontSize: 12}}>
                         <Row>
@@ -94,7 +112,7 @@ class Journey extends React.Component {
 
 const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadJourneys, selectJourneyMarker }, dispatch) });
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators({ loadJourneys, selectJourneyMarker, selectJourneyDisplayMode }, dispatch) });
 
 const googleApiWrapper = GoogleApiWrapper({
     apiKey: 'AIzaSyBJcBASC5XBVbIaQ4B1RGmp1iGNcHCvO-o'

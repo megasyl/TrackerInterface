@@ -10,7 +10,7 @@ export class JourneyMap extends Component {
         super(props);
     }
 
-    getMarkers() {
+    getSnappedMarkers() {
         if (!this.props.selectedJourney) {
             return null;
         }
@@ -28,17 +28,53 @@ export class JourneyMap extends Component {
         });
     }
 
-    getPath() {
+    getMarkers() {
+        if (!this.props.selectedJourney) {
+            return null;
+        }
+        const { records } = this.props.selectedJourney;
+        return records.map((point, i) => {
+            let icon = createPoint();
+            if (i === 0) icon = createMarker(START);
+            if (i === records.length - 1) icon = createMarker(STOP);
+            return (<Marker
+                key={i}
+                onClick={this.onMarkerClick}
+                icon={icon}
+                info={records[point.originalIndex]}
+                position={{lat: point.latitude, lng: point.longitude}} />)
+        });
+    }
+
+    getInterpolatedPath() {
         return this.props.selectedJourney ? this.props.selectedJourney.interpolatedPoints : []
+    }
+
+    getOriginalPath() {
+        return this.props.selectedJourney ? this.props.selectedJourney
+            .records.map(point => ({lat: point.latitude, lng: point.longitude})) : [];
+    }
+
+    getPath() {
+        if (!this.props.experimentalJourneyDisplay) {
+            return this.getOriginalPath();
+        }
+        return this.getInterpolatedPath();
     }
 
     onMarkerClick = (props, marker, e) => {
         this.props.actions.selectJourneyMarker(marker);
     };
 
+    renderMarkers() {
+        if (!this.props.experimentalJourneyDisplay) {
+            return this.getMarkers();
+        }
+        return this.getSnappedMarkers();
+    }
+
     render() {
         const marker = this.props.selectedJourneyMarker;
-        console.log(marker)
        return (
            <div style={{height: '400px', width: '100%'}}>
                <Map
@@ -56,7 +92,7 @@ export class JourneyMap extends Component {
                        strokeOpacity={0.8}
                        strokeWeight={4}
                        path={this.getPath()}/>
-                   {this.getMarkers()}
+                   {this.renderMarkers()}
                    <InfoWindow
                        visible={true}
                        marker={marker}>
