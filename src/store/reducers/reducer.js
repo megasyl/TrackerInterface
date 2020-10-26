@@ -52,7 +52,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload,
-                journeys: state.journeys.map(j => j._id === selectedJourney._id ? selectedJourney : j)
+                journeys: state.journeys.map(j => j._id === selectedJourney._id ? selectedJourney : j),
+                center: { lat: selectedJourney.records[0].latitude, lng: selectedJourney.records[0].longitude },
             };
         case 'SELECT_JOURNEY_MARKER':
             return {

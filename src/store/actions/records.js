@@ -37,4 +37,3 @@ export const loadLastRecords = () =>
             console.log(e)
         }
     };
-

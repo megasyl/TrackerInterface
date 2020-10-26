@@ -3,7 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Row, Col } from 'react-bootstrap';
 import moment from 'moment';
+import 'moment/locale/fr';
 import { selectRecord } from "../../../store/actions/records";
+
 
 export class TableElement extends Component {
     constructor(props) {
@@ -13,6 +15,13 @@ export class TableElement extends Component {
 
     selectRecord() {
         this.props.actions.selectRecord(this.props.record);
+    }
+
+    getDuration(timestamp) {
+        const beginDate = moment(timestamp);
+        const endDate = moment();
+        var msDuration = endDate.diff(beginDate);
+        return moment.duration(-msDuration).locale('fr').humanize(true);
     }
 
     render() {
@@ -37,7 +46,7 @@ export class TableElement extends Component {
                 </Col>
                 <Col  style={{width: '100%', margin: 0}}>
                     <div onClick={this.selectRecord} style={{width: '100%', margin: 0}}>
-                        <div style={{width: '100%'}}><b>{record.imei}</b></div>
+                        <div style={{width: '100%'}}><b>{record.vehicle.brand} {record.vehicle.model} {record.vehicle.plate}</b><span style={{float: 'right'}}>{this.getDuration(record.timestamp)}</span></div>
                         <div style={{width: '100%'}}>{record.address}</div>
                     </div>
                 </Col>

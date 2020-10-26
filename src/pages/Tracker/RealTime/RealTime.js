@@ -10,13 +10,6 @@ import Metrics from "../../../components/Tracker/RealTime/Metrics";
 import { createMarker, GREEN  } from '../../../components/Tracker/Markers';
 import {Map, Marker, GoogleApiWrapper, Polyline}  from 'google-maps-react';
 import moment from "moment";
-import avatar1 from "../../../assets/images/user/avatar-1.jpg";
-import DEMO from "../../../store/constant";
-import avatar2 from "../../../assets/images/user/avatar-2.jpg";
-import avatar3 from "../../../assets/images/user/avatar-3.jpg";
-
-
-
 
 class RealTime extends React.Component {
     constructor(props, context) {
@@ -35,7 +28,6 @@ class RealTime extends React.Component {
     componentWillUnmount() {
         this.ws.close();
     }
-
 
     render() {
         const { records, selectedRecord } = this.props;
